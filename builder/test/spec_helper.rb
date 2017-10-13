@@ -2,7 +2,7 @@ require 'serverspec'
 set :backend, :exec
 
 def image_path
-  return "hypriotos-rpi-#{ENV['VERSION']}.img"
+  return "rpi-tpms-#{ENV['VERSION']}.img"
 end
 
 def run( cmd )
