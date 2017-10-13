@@ -25,7 +25,7 @@ echo TRAVIS_TAG="${TRAVIS_TAG}"
 
 # name of the sd-image we gonna create
 HYPRIOT_IMAGE_VERSION=${VERSION:="dirty"}
-HYPRIOT_IMAGE_NAME="hypriotos-rpi-${HYPRIOT_IMAGE_VERSION}.img"
+HYPRIOT_IMAGE_NAME="rpi-tpms-${HYPRIOT_IMAGE_VERSION}.img"
 export HYPRIOT_IMAGE_VERSION
 
 # create build directory for assembling our image filesystem

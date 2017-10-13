@@ -14,8 +14,8 @@ deploy:
   skip_cleanup: true
   api_key: ${GITHUB_TOKEN}
   file:
-    - hypriotos-rpi-${TRAVIS_TAG}.img.zip
-    - hypriotos-rpi-${TRAVIS_TAG}.img.zip.sha256
+    - rpi-tpms-${TRAVIS_TAG}.img.zip
+    - rpi-tpms-${TRAVIS_TAG}.img.zip.sha256
   on:
     tags: true
     repo: ${TRAVIS_REPO_SLUG}
