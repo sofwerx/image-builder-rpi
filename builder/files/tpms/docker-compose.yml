@@ -1,0 +1,114 @@
+version: '3'
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  mqtt-data:
+    driver: local
+  elasticsearch-data:
+    driver: local
+
+services:
+
+  # Enable docker to auto-run any architecture image using qemu
+  #     docker run --rm --privileged multiarch/qemu-user-static:register --reset
+  multiarch:
+    container_name: multiarch
+    image: multiarch/qemu-user-static:register
+    privileged: true
+
+#  kibana:
+#    build: kibana/
+#    image: ianblenke/rpi-kibana:latest
+#    container_name: kibana
+#    hostname: kibana
+#    restart: always
+#    links:
+#      - "elasticsearch:elasticsearch"
+#    ports:
+#      - "5601:5601"
+#    depends_on:
+#      - multiarch
+#      - elasticsearch
+#    logging:
+#      driver: json-file
+#      options:
+#        max-size: "20k"
+
+  elasticsearch:
+    build: elasticsearch/
+    image: ianblenke/rpi-elasticsearch:latest
+    container_name: elasticsearch
+    hostname: elasticsearch
+    restart: always
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    depends_on:
+      - multiarch
+    logging:
+      driver: json-file
+      options:
+        max-size: "20k"
+
+  mqtt-elasticsearch:
+    build: mqtt-elasticsearch/
+    image: ianblenke/rpi-mqtt-elasticsearch:latest
+    container_name: mqtt_elasticsearch
+    hostname: mqtt-elasticsearch
+    restart: always
+    links:
+      - mqtt
+      - elasticsearch
+    depends_on:
+      - multiarch
+      - mqtt
+      - elasticsearch
+    logging:
+      driver: json-file
+      options:
+        max-size: "20k"
+
+  mqtt:
+    image: ianblenke/rpi-mqtt:latest
+    container_name: mqtt
+    hostname: mqtt
+    restart: always
+    volumes:
+      - mqtt-data:/data
+    depends_on:
+      - multiarch
+    logging:
+      driver: json-file
+      options:
+        max-size: "20k"
+
+  rtl433:
+    image: ianblenke/rpi-rtl433:latest
+    container_name: rtl433
+    hostname: rtl433
+    restart: always
+    links:
+      - mqtt
+    devices:
+      - "/dev/bus/usb"
+    command: rtl_433 -F json -U | mosquitto_pub -h mqtt -p 1883 -t home/rtl_433 -l
+    depends_on:
+      - multiarch
+      - mqtt
+    logging:
+      driver: json-file
+      options:
+        max-size: "20k"
+
