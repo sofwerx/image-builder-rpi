@@ -38,7 +38,6 @@ services:
 #        max-size: "20k"
 
   elasticsearch:
-    build: elasticsearch/
     image: ianblenke/rpi-elasticsearch:latest
     container_name: elasticsearch
     hostname: elasticsearch
@@ -63,7 +62,6 @@ services:
         max-size: "20k"
 
   mqtt-elasticsearch:
-    build: mqtt-elasticsearch/
     image: ianblenke/rpi-mqtt-elasticsearch:latest
     container_name: mqtt_elasticsearch
     hostname: mqtt-elasticsearch
