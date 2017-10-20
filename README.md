@@ -1,6 +1,6 @@
 # rpi-tpms
 
-[![Build Status](https://travis-ci.org/hypriot/image-builder-rpi.svg)](https://travis-ci.org/sofwerx/rpi-tpms)
+[![Build Status](https://travis-ci.org/sofwerx/rpi-tpms.svg)](https://travis-ci.org/sofwerx/rpi-tpms)
 
 The goal of this repo is to produce a resultant raspberry-pi image that has the following installed and pre-configured:
 
