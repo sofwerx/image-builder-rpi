@@ -19,23 +19,23 @@ services:
     image: multiarch/qemu-user-static:register
     privileged: true
 
-#  kibana:
-#    build: kibana/
-#    image: ianblenke/rpi-kibana:latest
-#    container_name: kibana
-#    hostname: kibana
-#    restart: always
+  kibana:
+    build: kibana/
+    image: ianblenke/rpi-kibana:latest
+    container_name: kibana
+    hostname: kibana
+    restart: always
 #    links:
 #      - "elasticsearch:elasticsearch"
-#    ports:
-#      - "5601:5601"
+    ports:
+      - "5601:5601"
 #    depends_on:
 #      - multiarch
 #      - elasticsearch
-#    logging:
-#      driver: json-file
-#      options:
-#        max-size: "20k"
+    logging:
+      driver: json-file
+      options:
+        max-size: "20k"
 
   elasticsearch:
     image: ianblenke/rpi-elasticsearch:latest

@@ -77,7 +77,9 @@ ENV PATH /opt/kibana/bin:/opt/kibana/node_modules/.bin:$PATH
 WORKDIR /opt/kibana
 
 RUN apt-get update \
- && apt-get install -y build-essential make libkrb5-dev gcc pkg-config libcairo2-dev libpng-dev libjpeg-dev libgif-dev g++ gyp node-gyp
+ && apt-get install -y build-essential make libkrb5-dev gcc pkg-config libcairo2-dev libpng-dev libjpeg-dev libgif-dev g++ gyp node-gyp ruby-dev rpm
+
+RUN gem install fpm -v 1.5.0
 
 RUN rm -fr node_modules \
  && npm install
