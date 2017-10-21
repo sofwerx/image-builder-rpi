@@ -1,21 +1,27 @@
 sudo: required
 services:
-  - docker
+- docker
 language: bash
 script:
-  - make shellcheck
-  - VERSION=${TRAVIS_TAG} make sd-image
+- make shellcheck
+- VERSION=${TRAVIS_TAG} make sd-image
+after_success:
+- docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 branches:
   only:
-    - master
-    - /^v\d.*$/
+  - master
+  - "/^v\\d.*$/"
 deploy:
   provider: releases
   skip_cleanup: true
-  api_key: ${GITHUB_TOKEN}
+  api_key: "${GITHUB_TOKEN}"
   file:
-    - rpi-tpms-${TRAVIS_TAG}.img.zip
-    - rpi-tpms-${TRAVIS_TAG}.img.zip.sha256
+  - rpi-tpms-${TRAVIS_TAG}.img.zip
+  - rpi-tpms-${TRAVIS_TAG}.img.zip.sha256
   on:
     tags: true
-    repo: ${TRAVIS_REPO_SLUG}
+    repo: "${TRAVIS_REPO_SLUG}"
+notifications:
+  slack:
+    rooms:
+      secure: rnInHKlO9X0uq8tmfm2GFnsoXJc89wUf0eE2dnymw4MPMSBeQTK0W3O7sDXTGrVF/l82SBUrirkTpYc1QCTAvuQanIGLve/h5EpjTZBr7OVAQ5KKdWnOJZkXy/EDwc2mg5WxXf9UbNlLYEfC0r0hBlO8ZwVCaCdMeZPkOz3gtwO0E5RDXFLVdTm2DQ7OvPfnOfHblRrgNxMJzdGqHkglXJzhqq1gdi1Fa8v3PrgbSOC888nHQb6O0+UYEUNXg8iVq0ojkiEwEOyU/0mvjI9Ni3RrzTyPElR2biyXR3WBqHAwPEIym5Am3i65IED4itALyAbcTE8hHFUB4tkQ6+8Yye4SYRK4tews9cUOKXXuGoK5TobCBSarCJ2ShG+wbYb+JnbYpsosMB3NgwD/78/1p0mhJ4K9chjgB+FNwd6gSsxhhQHeHexAelwxVA39YHInU4ALDmYAOO7hKdeooyWhoiK10I+a8TYCE5wBnRSsfxahGkSfUviVKAOcbmmG0Tp3FRQdrI40YSm2CD3wSFq7PqHr53eMnYUmS5qaA3JboFfIATspOEjeHOqLY/T7CjVUMuyM+ELz+Vq1b4LMiUgt4XlG7HUIqxnVQ468hIBccVOHyxSbfFbVGsR+oimqRCQKCDqMjvbwKsDlnpOjVCDyt5Jd4tilIr0lJatlWetCbtA=
