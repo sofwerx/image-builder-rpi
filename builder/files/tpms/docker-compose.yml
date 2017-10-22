@@ -20,8 +20,7 @@ services:
     privileged: true
 
   kibana:
-    build: kibana/
-    image: ianblenke/rpi-kibana:latest
+    image: sofwerx/rpi-kibana:latest
     container_name: kibana
     hostname: kibana
     restart: always
@@ -38,7 +37,7 @@ services:
         max-size: "20k"
 
   elasticsearch:
-    image: ianblenke/rpi-elasticsearch:latest
+    image: sofwerx/rpi-elasticsearch:latest
     container_name: elasticsearch
     hostname: elasticsearch
     restart: always
@@ -62,7 +61,7 @@ services:
         max-size: "20k"
 
   mqtt-elasticsearch:
-    image: ianblenke/rpi-mqtt-elasticsearch:latest
+    image: sofwerx/rpi-mqtt-elasticsearch:latest
     container_name: mqtt_elasticsearch
     hostname: mqtt-elasticsearch
     restart: always
@@ -79,7 +78,7 @@ services:
         max-size: "20k"
 
   mqtt:
-    image: ianblenke/rpi-mqtt:latest
+    image: sofwerx/rpi-mqtt:latest
     container_name: mqtt
     hostname: mqtt
     restart: always
@@ -93,7 +92,7 @@ services:
         max-size: "20k"
 
   rtl433:
-    image: ianblenke/rpi-rtl433:latest
+    image: sofwerx/rpi-rtl433:latest
     container_name: rtl433
     hostname: rtl433
     restart: always
