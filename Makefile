@@ -1,19 +1,22 @@
+IMAGE := sofwerx/rpi-tpms:latest
+
 default: build
 
 build:
-	docker build -t image-builder-rpi .
+	docker pull $(IMAGE) || true
+	docker build --cache-from $(IMAGE) -t $(IMAGE) .
 
 sd-image: build
-	docker run --rm --privileged -v $(shell pwd):/workspace -v /boot:/boot -v /lib/modules:/lib/modules -e TRAVIS_TAG -e VERSION image-builder-rpi
+	docker run --rm --privileged -v $(shell pwd):/workspace -v /boot:/boot -v /lib/modules:/lib/modules -e TRAVIS_TAG -e VERSION $(IMAGE)
 
 shell: build
-	docker run -ti --privileged -v $(shell pwd):/workspace -v /boot:/boot -v /lib/modules:/lib/modules -e TRAVIS_TAG -e VERSION image-builder-rpi bash
+	docker run -ti --privileged -v $(shell pwd):/workspace -v /boot:/boot -v /lib/modules:/lib/modules -e TRAVIS_TAG -e VERSION $(IMAGE) bash
 
 test:
-	VERSION=dirty docker run --rm -ti --privileged -v $(shell pwd):/workspace -v /boot:/boot -v /lib/modules:/lib/modules -e TRAVIS_TAG -e VERSION image-builder-rpi bash -c "unzip /workspace/rpi-tpms-dirty.img.zip && rspec --format documentation --color /workspace/builder/test/*_spec.rb"
+	VERSION=dirty docker run --rm -ti --privileged -v $(shell pwd):/workspace -v /boot:/boot -v /lib/modules:/lib/modules -e TRAVIS_TAG -e VERSION $(IMAGE) bash -c "unzip /workspace/rpi-tpms-dirty.img.zip && rspec --format documentation --color /workspace/builder/test/*_spec.rb"
 
 shellcheck: build
-	VERSION=dirty docker run --rm -ti -v $(shell pwd):/workspace image-builder-rpi bash -c 'shellcheck /workspace/builder/*.sh /workspace/builder/files/etc/firstboot.d/*'
+	VERSION=dirty docker run --rm -ti -v $(shell pwd):/workspace $(IMAGE) bash -c 'shellcheck /workspace/builder/*.sh /workspace/builder/files/etc/firstboot.d/*'
 
 vagrant:
 	vagrant up
@@ -24,7 +27,7 @@ docker-machine: vagrant
 	  --generic-ssh-key $(shell vagrant ssh-config | grep IdentityFile | cut -d ' ' -f 4) \
 	  --generic-ip-address $(shell vagrant ssh-config | grep HostName | cut -d ' ' -f 4) \
 	  --generic-ssh-port $(shell vagrant ssh-config | grep Port | cut -d ' ' -f 4) \
-	  image-builder-rpi
+	  $(IMAGE)
 
 test-integration: test-integration-image test-integration-docker
 
