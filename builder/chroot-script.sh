@@ -221,9 +221,9 @@ chmod +x usr/local/bin/rpi-serial-console
 
 # Deploy tpms docker containers
 
-sleep 10 # Wait 10 seconds to let dockerd fully start
-df -k
-ps axuwww | grep -i docker
+systemctl -a | grep docker
+systemctl start docker
+journalctl -xe
 cd /tpms
 docker-compose pull
 docker-compose up -d
