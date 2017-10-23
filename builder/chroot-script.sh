@@ -219,17 +219,6 @@ echo "Installing rpi-serial-console script"
 wget -q https://raw.githubusercontent.com/lurch/rpi-serial-console/master/rpi-serial-console -O usr/local/bin/rpi-serial-console
 chmod +x usr/local/bin/rpi-serial-console
 
-# Deploy tpms docker containers
-
-systemctl -a | grep docker
-systemctl start docker
-journalctl -xe
-cd /tpms
-docker-compose pull
-docker-compose up -d
-sleep 60
-docker-compose ps -a
-
 # cleanup APT cache and lists
 apt-get clean
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
