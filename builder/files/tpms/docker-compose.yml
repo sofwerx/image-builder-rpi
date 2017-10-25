@@ -24,13 +24,13 @@ services:
     container_name: kibana
     hostname: kibana
     restart: always
-#    links:
-#      - "elasticsearch:elasticsearch"
+    links:
+      - "elasticsearch:elasticsearch"
     ports:
       - "5601:5601"
-#    depends_on:
-#      - multiarch
-#      - elasticsearch
+    depends_on:
+      - multiarch
+      - elasticsearch
     logging:
       driver: json-file
       options:
@@ -96,6 +96,7 @@ services:
     container_name: rtl433
     hostname: rtl433
     restart: always
+    privileged: true
     links:
       - mqtt
     devices:
@@ -108,4 +109,5 @@ services:
       driver: json-file
       options:
         max-size: "20k"
+
 
